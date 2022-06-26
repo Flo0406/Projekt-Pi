@@ -1,0 +1,91 @@
+h2 {
+  font-size: 32px;
+  text-align: center;
+  list-style-type: none;
+  color: #000;
+}
+
+
+#style for website html,
+body {
+  background-image: linear-gradient(#e5dddd, #958f8f);
+
+}
+
+.container {
+  display:flex;
+  flex-direction: row;
+  gap: 3px;
+}
+
+.image figcaption {
+  font-size: 20px;
+  text-align: center;
+  color: #000;
+}
+.image img {
+  width: 100%;
+  height: auto;
+  padding: 0;
+  border-left: thin solid rgb(255 255 255);;
+  border-right: thin solid rgb(255 255 255);
+  border-bottom: thin solid rgb(255 255 255);
+  border-top: thin solid rgb(255 255 255);
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+}
+
+.Table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+
+.data {
+  display: flex;
+  justify-content: center;
+}
+
+.renew {
+  display: flex;
+  justify-content: center;
+}
+
+table,
+th,
+td {
+  border-collapse: collapse;
+  padding: 0;
+}
+
+table {
+  margin-left: 0;
+}
+
+th {
+  width: 140px;
+  height: 30px;
+  background-image: linear-gradient(#1b1a1a, #4d4949);
+  color: #fff;
+  border: thin solid rgb(0, 0, 0);
+  border-left: thin solid rgb(0, 0, 0);
+  border-right: thin solid rgb(0, 0, 0);
+  border-bottom: thin solid rgb(0, 0, 0);
+  border-top: thin solid rgb(0, 0, 0);
+}
+
+td {
+  height: auto;
+  background-image: linear-gradient(#f9f9f9, #e3e3e3);
+  border-left: thin solid rgb(0, 0, 0);;
+  border-right: thin solid rgb(0, 0, 0);
+  border-bottom: thin solid rgb(0, 0, 0);
+  border-top: thin solid rgb(0, 0, 0);
+  text-align: center;
+}
