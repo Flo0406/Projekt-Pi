@@ -92,8 +92,6 @@ system("sudo mv /home/pi/Projekt-Pi/Bildempfang.py /home/pi")
 system("sudo mv /home/pi/Projekt-Pi/webserver.py /home/pi") 
 # -------------------------------  change rights -------------------------------#
 system("sudo chown www-data:www-data server.php stylesheet.css")
-# -------------------------------  cronjob  -------------------------------#
-
 # -------------------------------  final reboot -------------------------------#
 
 duration_now = 5
