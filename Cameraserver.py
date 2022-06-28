@@ -149,7 +149,6 @@ def handle(msg):
     global cam
 
     message=msg['text']
-    msg_chatid=msg['chat']['id']
     
     if fileBuffer and message.lower() != "ja":
         fileBuffer = False
