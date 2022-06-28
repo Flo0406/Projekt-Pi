@@ -103,7 +103,7 @@ while duration_now >= 0 :
 
     min, sec = divmod(duration_now, 1000)
  
-    print("Everything is finished. Reboot in %d" %sec,end="\r")
+    print("Everything is done. Reboot in %d" %sec,end="\r")
     sleep(1)
     duration_now -= 1
 
