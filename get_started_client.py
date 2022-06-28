@@ -7,8 +7,8 @@ system("sudo passwd pi")  # change password
 
 # -------------------------------  update & upgrade -------------------------------#
 
-system("sudo apt-get update ")
-system("sudo apt-get upgrade")
+system("sudo apt-get update -y")
+system("sudo apt-get upgrade -y")
 
 # -------------------------------  install neccessary packages -------------------------------#
 
