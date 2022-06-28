@@ -1,14 +1,10 @@
 import socket
-import base64
 import io
 import os
 import time
-import glob
-import requests
 import telepot #telegram bot
 from telepot.loop import MessageLoop
 from datetime import datetime
-from io import BytesIO
 from PIL import Image, ImageFile
 from shutil import copyfile
 
