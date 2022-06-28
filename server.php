@@ -1,89 +1,19 @@
-
 <!doctype html>
 <html>
 
 
 <?php
-//Set the status variable to empty
-$Status1 = "";
-$Status2 = "";
-$Status3 = "";
-$Status4 = "";
-// check for camera 1 if any button is pressed
-if (isset($_POST['camera1'])) { // take picture with camera
-    shell_exec("/usr/bin/python3 /home/pi/webserver/take_picture.py");
-} elseif (isset($_POST['seconds1'])) { // dropdown menu
 
-    $time1 = $_POST['seconds1']; // get value from dropdown menu
-
-    if (isset($_POST['video1'])) { // take video , duration == value form dropdown menu
-        shell_exec("/usr/bin/python3 /home/pi/webserver/getVideo.py $time1");
-        $Status1 = "Camera 1: Video start with $time1 seconds"; //Setting the message to user video has been made
-    }
-}
-
-// check for camera 2 if any button is pressed
-
-if (isset($_POST['camera2'])) { // take picture with camera
-    shell_exec("/usr/bin/python3 /home/pi/webserver/take_picture.py");
-} elseif (isset($_POST['seconds2'])) {  // dropdown menu
-
-    $time2 = $_POST['seconds2']; // get value from dropdown menu
-
-    if (isset($_POST['video2'])) { // take video , duration == value form dropdown menu
-        shell_exec("/usr/bin/python3 /home/pi/webserver/getVideo.py $time2");
-        $Status2 = "Camera 2: Video start with $time2 seconds"; //Setting the message to user video has been made
-    }
-}
-
-//  check for camera 3 if any button is pressed
-
-if (isset($_POST['camera3'])) { // take picture with camera
-    shell_exec("/usr/bin/python3 /home/pi/webserver/take_picture.py");
-} elseif (isset($_POST['seconds3'])) {  // dropdown menu
-
-    $time3 = $_POST['seconds3']; // get value from dropdown menu
-
-    if (isset($_POST['video3'])) { // take video , duration == value form dropdown menu
-        shell_exec("/usr/bin/python3 /home/pi/webserver/getVideo.py $time3");
-        $Status3 = "Camera 3: Video start with $time3 seconds"; //Setting the message to user video has been made
-    }
-}
-
-// check for camera 4 if any button is pressed
-
-if (isset($_POST['camera4'])) { // take picture with camera
-    shell_exec("/usr/bin/python3 /home/pi/webserver/take_picture.py");
-} elseif (isset($_POST['seconds4'])) {  // dropdown menu
-
-    $time4 = $_POST['seconds4']; // get value from dropdown menu
-
-    if (isset($_POST['video4'])) { // take video , duration == value form dropdown menu
-        shell_exec("/usr/bin/python3 /home/pi/webserver/getVideo.py $time4");
-        $Status4 = "Camera 4: Video start with $time4 seconds"; //Setting the message to user video has been made
-    }
-}
-
-// refresh temperature and humidity values
-
-if (isset($_POST['Data_new'])) {
-    shell_exec("/usr/bin/python3 /home/pi/webserver/temp_webserver.py");
-}
-
-// get inital form text document
-$temp = file("/home/pi/webserver/Measure/Temp_webserver.txt");
-$humidity = file("/home/pi/webserver/Measure/Humidity_webserver.txt");
-
-// initial values temperature camera1 == [0] ...
-$temp1 = $temp[0];
-$temp2 = $temp[1];
-$temp3 = $temp[2];
-$temp4 = $temp[3];
-// initial values humidity camera1 == [0]...
-$humidity1 = $humidity[0];
-$humidity2 = $humidity[1];
-$humidity3 = $humidity[2];
-$humidity4 = $humidity[3];
+// get the temperature near the camera
+$temp1 = file("/home/pi/CAM1/Measurements/tempcam1.txt")[0];
+$temp2 = file("/home/pi/CAM2/Measurements/tempcam2.txt")[0];
+$temp3 = file("/home/pi/CAM3/Measurements/tempcam3.txt")[0];
+$temp4 = file("/home/pi/CAM4/Measurements/tempcam4.txt")[0];
+// get the humidity near the camera
+$humidity1 = file("/home/pi/CAM1/Measurements/humcam1.txt")[0];
+$humidity2 = file("/home/pi/CAM2/Measurements/humcam2.txt")[0];
+$humidity3 = file("/home/pi/CAM3/Measurements/humcam3.txt")[0];
+$humidity4 = file("/home/pi/CAM4/Measurements/humcam4.txt")[0];
 ?>
 
 
@@ -91,9 +21,9 @@ $humidity4 = $humidity[3];
 
 <head>
     <link rel="stylesheet" href="stylesheet.css">
-    <!-- seperate stylecheet for website-->
+    </ / seperate stylecheet for website>
     <meta http-equiv="refresh" content="5">
-    <!-- relaod intervall-->
+    </ / relaod intervall>
 </head>
 
 
@@ -108,23 +38,6 @@ $humidity4 = $humidity[3];
                     <figcaption> <b> Camera 1 </b> </figcaption>
                     <img src="CAM1.jpg" alt="TEST"> <!-- Name from the latest picture -->
                 </div>
-                <form action="pic.php" method="post">
-                    <div class="buttons">
-                        <div class="take picture">
-                            <button name="camera1">Take Picture </button> <!-- Create the button to take a photo -->
-                            <button name="video1"> Start Video </button>  <!-- Create button to start a video -->
-                            <select size="1" name="seconds1">    <!-- Dropdown-menu to set the time of the video  -->
-                                <option value="5">5s</option>
-                                <option value="10">10s</option>
-                                <option value="15">15s</option>
-                                <option value="20">20s</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- Tell the user a video has been started -->
-                    <div class="Status">
-                    <p><?php echo $Status1; ?></p>
-                    </div>
             </div>
 
             <!-- Class for the second Camera -->
@@ -132,23 +45,7 @@ $humidity4 = $humidity[3];
                 <!-- Class to show the current picture of Cam2-->
                 <div class="image">
                     <figcaption> <b> Camera 2 </b> </figcaption>
-                    <img src="CAM1.jpg" alt="TEST"> <!-- Name from the latest picture -->
-                </div>
-                <div class="buttons">
-                    <div class="take picture">
-                        <button name="camera2">Take Picture </button><!-- Create the button to take a photo -->
-                        <button name="video2"> Start Video </button> <!-- Create button to start a video -->
-                        <select size="1" name="seconds2"> <!-- Dropdown-menu to set the time of the video  -->
-                            <option value="5">5s</option>
-                            <option value="10">10s</option>
-                            <option value="15">15s</option>
-                            <option value="20">20s</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- Tell the user a video has been started -->
-                <div class="Status">
-                    <p><?php echo $Status2; ?></p>
+                    <img src="CAM2.jpg" alt="TEST"> <!-- Name from the latest picture -->
                 </div>
             </div>
 
@@ -158,23 +55,7 @@ $humidity4 = $humidity[3];
                 <!-- Class to show the current picture of Cam3-->
                 <div class="image">
                     <figcaption> <b> Camera 3 </b> </figcaption>
-                    <img src="CAM1.jpg" alt="TEST"> <!-- Name from the latest picture -->
-                </div>
-                <div class="buttons">
-                    <div class="take picture">
-                        <button name="camera3">Take Picture </button><!-- Create the button to take a photo -->
-                        <button name="video3"> Start Video </button> <!-- Create button to start a video -->
-                        <select size="1" name="seconds3"> <!-- Dropdown-menu to set the time of the video  -->
-                            <option value="5">5s</option>
-                            <option value="10">10s</option>
-                            <option value="15">15s</option>
-                            <option value="20">20s</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- Tell the user a video has been started -->
-                <div class="Status">
-                    <p><?php echo $Status3; ?></p>
+                    <img src="CAM3.jpg" alt="TEST"> <!-- Name from the latest picture -->
                 </div>
             </div>
 
@@ -183,27 +64,9 @@ $humidity4 = $humidity[3];
                 <!-- Class to show the current picture of Cam4-->
                 <div class="image">
                     <figcaption> <b> Camera 4 </b> </figcaption>
-                    <img src="CAM1.jpg" alt="TEST"> <!-- Name from the latest picture -->
+                    <img src="CAM4.jpg" alt="TEST"> <!-- Name from the latest picture -->
                 </div>
-                <div class="buttons">
-                    <div class="take picture">
-                        <button name="camera4">Take Picture </button><!-- Create the button to take a photo -->
-                        <button name="video4"> Start Video </button> <!-- Create button to start a video -->
-                        <select size="1" name="seconds4"> <!-- Dropdown-menu to set the time of the video  -->
-                            <option value="5">5s</option>
-                            <option value="10">10s</option>
-                            <option value="15">15s</option>
-                            <option value="20">20s</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- Tell the user a video has been started -->
-                <div class="Status">
-                    <p><?php echo $Status4; ?></p>
-                </div>
-
             </div>
-
         </div>
 
         <br><br><br>
@@ -217,7 +80,7 @@ $humidity4 = $humidity[3];
                             <table>
                                 <tr>
                                     <th> Camera </th>
-                                    <th> Temperature[Â°C] </th>
+                                    <th> Temperature[°C] </th>
                                     <th> Humidity[%] </th>
                                 </tr>
                                 <tr>
@@ -261,12 +124,6 @@ $humidity4 = $humidity[3];
                     </tr>
                 </table><br>
             </div>
-            <!-- Create the button to refresh the temperature and humidity data -->
-            <div class="renew">
-                <button name="Data_new"> Refresh Data Test </button>
-            </div>
-            </form>
-
         </div>
 
     </main>
@@ -274,3 +131,4 @@ $humidity4 = $humidity[3];
 </body>
 
 </html>
+
