@@ -28,7 +28,7 @@ system("sudo apt-get install %s -y" % list_apt_install)
 system("sudo pip3 install %s" % list_pip_install)
 # -------------------------------  download files  -------------------------------#
 system("git clone --branch Client https://github.com/Flo0406/Projekt-Pi")
-system("sudo mv /home/pi/Projekt-Pi/Client.py /home/pi")
+system("sudo mv /home/pi/Projekt-Pi/Cameraclient.py /home/pi")
 # -------------------------------  final reboot -------------------------------#
 
 duration_now = 5
