@@ -85,15 +85,17 @@ for i in range(1, inp + 1, 1):
     mkdir(folder_name)
 
 # -------------------------------  download files  -------------------------------#
+
 system("git clone --branch Server https://github.com/Flo0406/Projekt-Pi")
 
 system("sudo mv /home/pi/Projekt-Pi/server.php /var/www/html/")
 system("sudo mv /home/pi/Projekt-Pi/stylesheet.css /var/www/html/")
 system("sudo mv /home/pi/Projekt-Pi/Cameraserver.py /home/pi")
 system("sudo mv /home/pi/Projekt-Pi/webserver.py /home/pi") 
+
 # -------------------------------  change rights -------------------------------#
+
 system("sudo chown www-data:www-data /var/www/html/server.php /var/www/html/stylesheet.css")
-# -------------------------------  cronjob  -------------------------------#
 
 # -------------------------------  final reboot -------------------------------#
 
