@@ -88,10 +88,12 @@ system("git clone --branch Server https://github.com/Flo0406/Projekt-Pi")
 
 system("sudo mv /home/pi/Projekt-Pi/server.php /var/www/html/")
 system("sudo mv /home/pi/Projekt-Pi/stylesheet.css /var/www/html/")
-system("sudo mv /home/pi/Projekt-Pi/Bildempfang.py /home/pi")
+system("sudo mv /home/pi/Projekt-Pi/Cameraserver.py /home/pi")
 system("sudo mv /home/pi/Projekt-Pi/webserver.py /home/pi") 
 # -------------------------------  change rights -------------------------------#
 system("sudo chown www-data:www-data server.php stylesheet.css")
+# -------------------------------  cronjob  -------------------------------#
+
 # -------------------------------  final reboot -------------------------------#
 
 duration_now = 5
@@ -105,4 +107,4 @@ while duration_now >= 0 :
     duration_now -= 1
 
 print("\nReboot now")
-# system("sudo reboot")
+system("sudo reboot")
