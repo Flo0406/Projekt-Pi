@@ -33,12 +33,6 @@ body {
   border-top: thin solid rgb(255 255 255);
 }
 
-.buttons {
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  justify-content: center;
-}
 
 .Table {
   display: flex;
@@ -52,10 +46,6 @@ body {
   justify-content: center;
 }
 
-.renew {
-  display: flex;
-  justify-content: center;
-}
 
 table,
 th,
