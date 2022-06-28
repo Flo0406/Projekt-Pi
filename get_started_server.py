@@ -20,7 +20,8 @@ list_apt_install = (        # version:
     "python3-pip",          # 18.1 python 3.7
     "libopenjp2-7",         
     "libtiff5",             
-    "libatlas-base-dev",    
+    "libatlas-base-dev",
+    "git",
 )
 list_pip_install = (
     "pillow",
