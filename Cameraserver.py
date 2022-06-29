@@ -257,7 +257,7 @@ def getNewFile(): # sort image folder and return second element
     return listOfFiles[1] 
 
         
-def sendNewestPhoto(fileName, cam): # send newest image via telegram ??
+def sendNewestPhoto(fileName, cam): # send newest image via telegram 
     
     document = open('/home/pi/CAM' + str(cam) + '/Images/' + fileName, 'rb') 
     bot.sendPhoto(chatid, document)
