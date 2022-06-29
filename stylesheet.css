@@ -20,7 +20,7 @@ body {
 
 }
 
-.container { /* defines structure of wenbsite*/
+.container { /* defines structure of website*/
   display:flex;
   flex-direction: row;
   gap: 3px;
