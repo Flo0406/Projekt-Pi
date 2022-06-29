@@ -1,3 +1,11 @@
+#----------------------------------------------------------------------------------------------#
+#Version    : 1.0
+#Date       : 29.06.2022
+#Description: This Script communicate with the Server Raspberrry Pi and send the newest 
+#             picture or video.
+#----------------------------------------------------------------------------------------------#
+
+
 import socket
 import time
 import Adafruit_DHT
@@ -7,6 +15,7 @@ from datetime import datetime
 
 host = 'your server IP' #ipaddress of the host here enter your own ip
 port = your port #same port as host
+CLIENTNUMBER = '...'  # unique number of client 1 to 4
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((host, port))
@@ -34,9 +43,11 @@ def Image():  # take an image, send size of the image, send image
     reply = s.recv(1024) # wait for reply of the server, so we can send the image
     message = reply.decode('utf-8')
     print(message)
+    
     if (message == 'ok'): # when server send 'ok', send the image
         s.send(imagedata)
         imagefile.close()
+        
 
 def Video(duration): #do a video, send size of video, send video
     duration = duration # duration is given by server message
@@ -63,7 +74,7 @@ def Video(duration): #do a video, send size of video, send video
         time.sleep(clearance)
         duration_now += 1
 
-    # Aufnahme stoppen und Kameramodul schliessen
+    # stop recording and close camera
     camera.stop_recording()
     camera.close()
 
@@ -86,7 +97,9 @@ while True:
         print(message)
         wish = message.split('#', 3)#split the message, which is separated with hastag
         print(wish)
-        if wish[1]=='1':#when second sign is '1' cameraclient 1 should do something
+        
+        if wish[1]==CLIENTNUMBER:#when second sign is '1' cameraclient 1 should do something
+        #if wish[1]=='1':#when second sign is '1' cameraclient 1 should do something
             if wish[2]=='pic': #when second sign is 'pic' call function to send image
                 print("PIC")
                 Image()
