@@ -1,3 +1,10 @@
+#------------------------------------------------------------------------------------------#
+# Version: 1.0
+# Date: 29.06.22
+# Description: move pictures to html folder and change group and user to enable access for
+#              the webserver
+#------------------------------------------------------------------------------------------#
+
 from os import system
 
 for i in range(4): # move newest picture to webserver and change group and user for access
