@@ -1,4 +1,12 @@
-h2 {
+/*#------------------------------------------------------------------------------------------#
+# Version    : 1.0
+# Date       : 29.06.2022
+# Description: This ist the stylesheet for the Script 'server.php'. The stylesheet define the
+             rules for the construction of the webserver.
+
+#------------------------------------------------------------------------------------------#*/
+
+h2 { /* header style */
   font-size: 32px;
   text-align: center;
   list-style-type: none;
@@ -12,18 +20,18 @@ body {
 
 }
 
-.container {
+.container { /* defines structure of wenbsite*/
   display:flex;
   flex-direction: row;
   gap: 3px;
 }
 
-.image figcaption {
+.image figcaption { /* caption of images*/
   font-size: 20px;
   text-align: center;
   color: #000;
 }
-.image img {
+.image img { /* structure of images*/
   width: 100%;
   height: auto;
   padding: 0;
@@ -34,14 +42,14 @@ body {
 }
 
 
-.Table {
+.Table { /*structure of table*/
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 2px;
 }
 
-.data {
+.data { /* appearance of inner table*/
   display: flex;
   justify-content: center;
 }
@@ -49,7 +57,7 @@ body {
 
 table,
 th,
-td {
+td { /* border of inner and outer table*/
   border-collapse: collapse;
   padding: 0;
 }
@@ -58,7 +66,7 @@ table {
   margin-left: 0;
 }
 
-th {
+th { /* appearance of header in table*/
   width: 140px;
   height: 30px;
   background-image: linear-gradient(#1b1a1a, #4d4949);
@@ -70,7 +78,7 @@ th {
   border-top: thin solid rgb(0, 0, 0);
 }
 
-td {
+td { /* appearance of data in table*/
   height: auto;
   background-image: linear-gradient(#f9f9f9, #e3e3e3);
   border-left: thin solid rgb(0, 0, 0);;
