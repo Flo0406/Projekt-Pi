@@ -1,3 +1,11 @@
+#------------------------------------------------------------------------------------------#
+# Version: 1.0
+# Date: 29.06.22
+# Description: Script for the communication with the messenger 'Telegramm' and the 
+#              Raspberry PI clients. This Script also save the newest picture and videos 
+#              in the right folder.
+#------------------------------------------------------------------------------------------#
+
 import socket
 import io
 import os
@@ -32,12 +40,14 @@ def setupServer(): #this function creates a socket using the internet
     except socket.error as msg:
         print(msg)
     print("Socket bind complete.")
+    
     return s
 
 def setupConnection(): #this function set up the connection to the client
-    s.listen(3) # Allows one connection at a time.
+    s.listen(3) # Allows 3 connections at a time.
     conn, address = s.accept() #accept the client
     print("Connected to: " + address[0] + ":" + str(address[1]))
+    
     return conn
 
 def GETSIZE(conn): # this function return the size of the data that we will receive
@@ -46,16 +56,20 @@ def GETSIZE(conn): # this function return the size of the data that we will rece
     conn.sendall(str.encode('ok')) #send 'ok' because we are ready to receive the big data
     print(size)
     size = int(size)
+    
     return size
     
 def imageTransfer(conn, size, cam): #this function is used to receive and save images
+    
     now = datetime.now()
     currenttime = now.strftime("%Y%m%d%H%M%S")
     picturename = currenttime + "Picture.jpg" # name is build from Year,Month,Day,Hour,Minute,Second
     print(picturename)
+    
     ImageFile.LOAD_TRUNCATED_IMAGES = True # need to prevent from "truncated" error
     imagedata = conn.recv(2048) #receive imagedata
     data = imagedata
+    
     if imagedata: 
         while imagedata: # while we receive data do this
             imagedata = conn.recv(2048)
@@ -63,23 +77,28 @@ def imageTransfer(conn, size, cam): #this function is used to receive and save i
             data += imagedata # add received data to data store
             if len(data) == size:
                 break
+                
     image = Image.open(io.BytesIO(data)) # put data into image
     image.save(picturename) #save Image with given picturename
     image.save('CAM'+str(cam)+'.jpg')
+    
     os.system('mv /home/pi/'+picturename+' /home/pi/CAM'+str(cam)+'/Images/')#move picture to provided directory
     os.system('sudo mv /home/pi/CAM'+str(cam)+'.jpg /home/pi/CAM'+str(cam)+'/Images/')#move picture to provided directory
+    
     print("Image saved")
     folder = '/home/pi/CAM'+str(cam)+'/Images/'
     dirlist = os.listdir(folder)
     numberofimages = len(dirlist)
+    
     if numberofimages == 10:
-        print(numberofimages)
+        
         dirName = '/home/pi/CAM'+str(cam)+'/Images' # + camera + '/photos'
         listOfFiles = sorted(filter (lambda x: os.path.isfile(os.path.join(dirName, x)), os.listdir(dirName)))
         os.remove('/home/pi/CAM'+str(cam)+'/Images/'+listOfFiles[0])
 
 
 def videoTransfer(conn, size, cam): #this function is used to receive and save videos
+    
     global noimage    
     now = datetime.now()
     currenttime = now.strftime("%Y%m%d%H%M%S")
@@ -87,6 +106,7 @@ def videoTransfer(conn, size, cam): #this function is used to receive and save v
     print(videoname)
     videodata = conn.recv(4096)
     data = videodata   
+    
     if videodata:
         while len(data)<size: # as long as data is not the expected size do this
             videodata = conn.recv(4096)
@@ -95,6 +115,7 @@ def videoTransfer(conn, size, cam): #this function is used to receive and save v
             if len(data) == size:
                 print("done")
                 break
+                
     video = open('video.h264','wb')#save video in h264 format 
     video.write(data)
     video.close() 
@@ -102,8 +123,10 @@ def videoTransfer(conn, size, cam): #this function is used to receive and save v
     print("Video saved")
     os.system('mv /home/pi/'+videoname+' /home/pi/CAM'+str(cam)+'/Videos/')#move picture to provided directory
     noimage = False
+    
 
 def getTemp(cam):
+    
     global connection
     conn = connection[cam-1]
     conn.sendall(str.encode('Cam#'+str(cam)+'#temp'))
@@ -117,9 +140,9 @@ def getTemp(cam):
     hum = open('/home/pi/CAM'+str(cam)+'/Measurements/humcam'+str(cam)+'.txt','w')
     hum.write(humidity)
 
-    print(temperature)
 
 def getVideo(cam, length): #this function is called to ask clients for a "length"long video
+    
     global connection
     global noimage
     noimage = True
@@ -129,8 +152,10 @@ def getVideo(cam, length): #this function is called to ask clients for a "length
     if size > 0: # when we received a size call videoTransfer
         videoTransfer(conn, size, cam)
         size = 0
+        
 
 def getImage(cam): #this function is called to ask clients for a Image
+    
     global connection
     conn = connection[cam-1]
     conn.sendall(str.encode('Cam#'+str(cam)+'#pic')) # send message to all clients
@@ -138,8 +163,10 @@ def getImage(cam): #this function is called to ask clients for a Image
     if size > 0: # when we received a size call imageTransfer
         imageTransfer(conn, size, cam) 
         size = 0
+        
 
 def handle(msg):
+    
     global fileBuffer
     global newPhoto
     global cam
@@ -153,63 +180,60 @@ def handle(msg):
     if message.lower() == "/start" :
         bot.sendMessage(chatid, 'Die Sicherheitsueberwachung wurde gestartet. \nWenn ein aktuelles Bild einer Kamera geschickt werden soll, antworten Sie mit \"/Kamera*zahl*\". \nSoll eine Aufnahme gestartet werden, antworten Sie mit \"/aufnahme*kamera*,*sekunden* (max. 20sek)\".')
 
-    if message[0:9].lower() == "/aufnahme":
+    if message[0:9].lower() == "/aufnahme": # user wants video
 
-        if message[9] == '1':
+        if message[9] == '1': # camera 1
             cam = 1
-            startVideo(cam, message)
-        elif message[9] == '2':
+            startVideo(cam, message) 
+        elif message[9] == '2': # camera 2
             cam = 2
             startVideo(cam, message)
-        elif message[9] == '3':
+        elif message[9] == '3': # camera 3
             cam = 3
-            #startVideo(cam, message)
-        elif message[9] == '4':
+        elif message[9] == '4': # camera 4
             cam = 4
-            #startVideo(cam, message)
         else:
             bot.sendMessage(chatid, 'Die Kameraeingabe ist ungueltig.')
 
-    if message[0:7].lower() == "/kamera":
+    if message[0:7].lower() == "/kamera": # user wants a new picture
         if len(message) == 8 and int(message[7]) > 0 and int(message[7]) < 5:
-            if int(message[7]) == 1:
+            if int(message[7]) == 1: # camera 1
                 cam = 1
-                getImage(cam)
+                getImage(cam) # take picture
 
                 time.sleep(1)
 
-                newPhoto = getNewFile()
-                sendNewestPhoto(newPhoto, cam) 
+                newPhoto = getNewFile() # take picture
+                sendNewestPhoto(newPhoto, cam) # send picture 
                 fileBuffer = True
 
-            elif int(message[7]) == 2:
+            elif int(message[7]) == 2: # camera 2
                 cam = 2
-                getImage(cam)
+                getImage(cam) # take picture
 
                 time.sleep(1)
 
-                newPhoto = getNewFile()
-                sendNewestPhoto(newPhoto, cam) 
+                newPhoto = getNewFile() # take picture
+                sendNewestPhoto(newPhoto, cam) # send picture
                 fileBuffer = True
 
-            elif int(message[7]) == 3:
+            elif int(message[7]) == 3: # camera 3
                 cam = 3
-                getImage(cam)
+                getImage(cam) # take picture
 
                 time.sleep(1)
 
-                newPhoto = getNewFile()
-                sendNewestPhoto(newPhoto, cam) # Kamera Nummer noch angeben!
+                newPhoto = getNewFile() 
+                sendNewestPhoto(newPhoto, cam) # send picture
                 fileBuffer = True
 
-            elif int(message[7]) == 4:
-                cam = 4
-                getImage(cam)
+            elif int(message[7]) == 4: # camera 4
+                getImage(cam) # take picture
 
                 time.sleep(1)
-
-                newPhoto = getNewFile()
-                sendNewestPhoto(newPhoto, cam) # Kamera Nummer noch angeben!
+                
+                newPhoto = getNewFile() 
+                sendNewestPhoto(newPhoto, cam) # send picture
                 fileBuffer = True
 
         else:
@@ -218,7 +242,7 @@ def handle(msg):
         if fileBuffer:
             bot.sendMessage(chatid, "Soll das aktuelle Bild gespeichert werden?")
 
-    if fileBuffer and message.lower() == "ja":
+    if fileBuffer and message.lower() == "ja": # user wants to keep image
         copyfile('/home/pi/CAM' + str(cam) + '/Images/' + newPhoto, '/home/pi/CAM' + str(cam) + '/Images/TelegramImages/' + newPhoto)
         fileBuffer = False
         
@@ -226,39 +250,46 @@ def handle(msg):
     
 
 def getNewFile(): # Camera + Video / Photo?
-    dirName = '/home/pi/CAM' + str(cam) + '/Images' 
+    
+    dirName = '/home/pi/CAM' + str(cam) + '/Images' # directory
     listOfFiles = sorted(filter (lambda x: os.path.isfile(os.path.join(dirName, x)), os.listdir(dirName)))
-    listOfFiles.reverse()
-    return listOfFiles[1]
+    listOfFiles.reverse() 
+    return listOfFiles[1] 
+
         
 def sendNewestPhoto(fileName, cam): # Camera und Video / Photo ??
+    
     document = open('/home/pi/CAM' + str(cam) + '/Images/' + fileName, 'rb') 
     bot.sendPhoto(chatid, document)
 
+    
 def getNewFileVideo():
+    
     dirName = '/home/pi/CAM' + str(cam) + '/Videos'
     listOfFiles = sorted(filter (lambda x: os.path.isfile(os.path.join(dirName, x)), os.listdir(dirName)))
     listOfFiles.reverse()
     return listOfFiles[0]
 
+
 def sendNewestVideo(fileName, cam):
+    
     document = open('/home/pi/CAM' + str(cam) + '/Videos/' + fileName, 'rb')
     bot.sendVideo(chatid, document)
+    
 
 def startVideo(cam, message):
     # if one digit number behind command is added
         if len(message) == 12 and message[-1].isdigit():
             bot.sendMessage(chatid, 'Die Aufnahme wurde fuer ' + message[-1] + ' Sekunden gestartet. Bitte warten...')
             getVideo(cam, int(message[-1]))
-            #time.sleep(int(message[-1])+2)
             time.sleep(1)
             newVideo = getNewFileVideo()
             sendNewestVideo(newVideo, cam)
+            
         # if two digit number behind command is added
         elif len(message) == 13 and message[-2:].isdigit() and int(message[-2:]) <= 20: 
             bot.sendMessage(chatid, 'Die Aufnahme wurde fuer ' + message[-2:] + ' Sekunden gestartet. Bitte warten...')
             getVideo(cam, int(message[-2:]))
-            #time.sleep(int(message[-2:])+2)
             time.sleep(1)
             newVideo = getNewFileVideo()
             sendNewestVideo(newVideo, cam)
@@ -266,8 +297,11 @@ def startVideo(cam, message):
             bot.sendMessage(chatid, 'Die maximale Aufnahmezeit betraegt 20 Sekunden.')
         else:
             bot.sendMessage(chatid, 'Es wurde keine gueltige Zahl eingegeben.')
+            
 
 s = setupServer()
+
+# Flags
 connected = False
 video = False
 global noimage
@@ -284,12 +318,13 @@ alreadyconnected = False
 connection = []
 lastTime = 0
 numberofcams = 0
+
 while True:
-    if numberofcams<2:
+    if numberofcams<2: # number of connected clients
         try:
-            conn = setupConnection()
+            conn = setupConnection() # setup connection
             if not conn in connection:
-                connection.append(conn)
+                connection.append(conn) # add connection to list
                 print("new connection")
                 numberofcams += 1
         
@@ -297,10 +332,12 @@ while True:
             for connections in connection:
                 connections.close()
     else:
-        period = datetime.now()
+        period = datetime.now() # current time
+        # take picture every 20 seconds 
         if period.second % 20 == 0 and (abs(period.second - lastTime)) >= 1 and not noimage:
-            print(period)
+
             lastTime = period.second
+            
             for i in range(len(connection)):
                 getImage(i+1)
                 getTemp(i+1)
