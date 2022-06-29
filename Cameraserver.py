@@ -21,6 +21,7 @@ from shutil import copyfile
 host = '' #this is the server
 port = your port # port that is used for this connection
 size = 0
+NUMBEROFCLIENTS = ... # between 1 - 4
 
 token = "token of your selfmade bot" #token from bot
 chatid = your chatid #chatid of my telegram
@@ -320,7 +321,7 @@ lastTime = 0
 numberofcams = 0
 
 while True:
-    if numberofcams<2: # number of connected clients
+    if numberofcams < NUMBEROFCLIENTS: # number of connected clients
         try:
             conn = setupConnection() # setup connection
             if not conn in connection:
