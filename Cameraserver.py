@@ -203,7 +203,7 @@ def handle(msg):
 
                 time.sleep(1)
 
-                newPhoto = getNewFile() # take picture
+                newPhoto = getNewFile() 
                 sendNewestPhoto(newPhoto, cam) # send picture 
                 fileBuffer = True
 
@@ -213,7 +213,7 @@ def handle(msg):
 
                 time.sleep(1)
 
-                newPhoto = getNewFile() # take picture
+                newPhoto = getNewFile() 
                 sendNewestPhoto(newPhoto, cam) # send picture
                 fileBuffer = True
 
@@ -249,7 +249,7 @@ def handle(msg):
         bot.sendMessage(chatid, "Das Bild wurde gespeichert.")
     
 
-def getNewFile(): # Camera + Video / Photo?
+def getNewFile(): # sort image folder and return second element
     
     dirName = '/home/pi/CAM' + str(cam) + '/Images' # directory
     listOfFiles = sorted(filter (lambda x: os.path.isfile(os.path.join(dirName, x)), os.listdir(dirName)))
@@ -257,13 +257,13 @@ def getNewFile(): # Camera + Video / Photo?
     return listOfFiles[1] 
 
         
-def sendNewestPhoto(fileName, cam): # Camera und Video / Photo ??
+def sendNewestPhoto(fileName, cam): # send newest image via telegram ??
     
     document = open('/home/pi/CAM' + str(cam) + '/Images/' + fileName, 'rb') 
     bot.sendPhoto(chatid, document)
 
     
-def getNewFileVideo():
+def getNewFileVideo(): # sort video folder and return second element
     
     dirName = '/home/pi/CAM' + str(cam) + '/Videos'
     listOfFiles = sorted(filter (lambda x: os.path.isfile(os.path.join(dirName, x)), os.listdir(dirName)))
@@ -271,7 +271,7 @@ def getNewFileVideo():
     return listOfFiles[0]
 
 
-def sendNewestVideo(fileName, cam):
+def sendNewestVideo(fileName, cam):  # send newest video via telegram
     
     document = open('/home/pi/CAM' + str(cam) + '/Videos/' + fileName, 'rb')
     bot.sendVideo(chatid, document)
