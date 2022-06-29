@@ -1,3 +1,10 @@
+#----------------------------------------------------------------------------------------------#
+#Version    : 1.0
+#Date       : 29.06.2022
+#Description: Use this script to install and create the required packages and paths 
+#             for the Server Raspberry Pi
+#----------------------------------------------------------------------------------------------#
+
 from os import mkdir, system
 from time import sleep
 # -------------------------------  settings -------------------------------#
