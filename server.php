@@ -3,6 +3,15 @@
 
 
 <?php
+    
+//----------------------------------------------------------------------------------------------//
+//Version    : 1.0
+//Date       : 29.06.2022
+//Description: This Code create a Website to show the neweset picture of the camera surveillance
+//             and the and the latest temperature and humidity of the cameras' environment. This 
+//             Website refresh every 5 seconds to get the newest data.
+//
+//----------------------------------------------------------------------------------------------//
 
 // get the temperature near the camera
 $temp1 = file("/home/pi/CAM1/Measurements/tempcam1.txt")[0];
